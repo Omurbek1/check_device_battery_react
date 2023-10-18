@@ -1,34 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react'
+import { useBattery } from 'react-use'
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
+  const battery=useBattery()
+  const {isSupported,level, charging, dischargingTime, chargingTime}=battery;
+  if(!isSupported){
+    return(
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <strong>Датчик батареи</strong>: <span>Не поддерживается</span> 
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    )
+  }
+  return (
+    <div>
+      <strong>Уровень заряда -</strong>
+      <span>{(level*100).toFixed(0)} %</span><br/>
+      <strong>Зарядка</strong>:  {" "} 
+      <span>{charging ? "Да" : "Нет "}</span> <br /> 
+      <strong>Время зарядки</strong>:   
+      <span>{chargingTime ? chargingTime : "Finished"}</span> <br />
+      <strong>Время разрядки</strong>:&nbsp;&nbsp;{" "}
+      <span>{dischargingTime}</span>
+    </div>
   )
 }
 
